@@ -1,0 +1,10 @@
+spring:
+  #设置thymeleaf模板渲染
+  thymeleaf:
+    prefix: classpath:/static/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false

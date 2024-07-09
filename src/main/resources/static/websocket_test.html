@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>websocket通讯</title>
+</head>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+    var socket = null;
+    var userid = "";
+
+    function openSocket() {
+        //获取用户输入的用户id
+        userid = document.getElementById("userid").value;
+        //这个链接地址对应了springboot跑的端口和上面标注的访问的接口
+        var socketUrl = "ws://localhost:8080/login_connect/" + userid;
+
+        socket = new WebSocket(socketUrl);
+        //下面几个方法对应了服务端的几个方法
+        //连接成功
+        socket.onopen = function() {
+            console.log("websocket已打开");
+        };
+
+        //发生了错误事件
+        socket.onerror = function() {
+            console.log("websocket发生了错误");
+        }
+
+        //收到消息
+        socket.onmessage = function(msg) {
+            console.log("服务器发送的数据：" + msg.data);
+        };
+
+        //关闭连接后运行
+        socket.onclose = function() {
+            console.log("websocket已关闭");
+        };
+
+    }
+    //发送数据给服务器
+    function sendMessage() {
+        socket.send('{"receiveuserid":"' + $("#receiveuserid").val() + '","message":"' + $("#message").val() +'"}');
+    }
+</script>
+<body>
+
+用户名：<input id="userid" value="test_user">
+<br>
+接收人：<input id="receiveuserid" value="test_user">
+<br>
+发送的信息：<input id="message" value="test websocket connection"><br>
+<button onclick="openSocket()">连接到websocket</button><br>
+<button onclick="sendMessage()">发送消息</button>
+</body>
+
+</html>
